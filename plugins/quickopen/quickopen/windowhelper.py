@@ -17,11 +17,11 @@
 #  Foundation, Inc., 51 Franklin St, Fifth Floor,
 #  Boston, MA 02110-1301, USA.
 
-from popup import Popup
+from .popup import Popup
 import os
 from gi.repository import Gio, GLib, Gtk, Pluma
-from virtualdirs import RecentDocumentsDirectory
-from virtualdirs import CurrentDocumentsDirectory
+from .virtualdirs import RecentDocumentsDirectory
+from .virtualdirs import CurrentDocumentsDirectory
 
 ui_str = """<ui>
   <menubar name="MenuBar">
@@ -98,7 +98,7 @@ class WindowHelper:
                                         if gfile.is_native():
                                                 paths.append(gfile)
 
-                except StandardError:
+                except Exception:
                         pass
 
                 # Recent documents
@@ -135,7 +135,7 @@ class WindowHelper:
 
                 paths = []
 
-                for line in file(filename, 'r').xreadlines():
+                for line in file(filename, 'r'):
                         uri = line.strip().split(" ")[0]
                         f = Gio.file_new_for_uri(uri)
 
@@ -160,7 +160,7 @@ class WindowHelper:
                 desktopdir = None
 
                 if os.path.isfile(config):
-                        for line in file(config, 'r').xreadlines():
+                        for line in file(config, 'r'):
                                 line = line.strip()
 
                                 if line.startswith('XDG_DESKTOP_DIR'):

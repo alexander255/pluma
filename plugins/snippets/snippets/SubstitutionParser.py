@@ -71,7 +71,7 @@ class SubstitutionParser:
                                   'L': Modifiers.lower,
                                   't': Modifiers.title}
                 
-                for k, v in modifiers.items():
+                for k, v in list(modifiers.items()):
                         self.modifiers[k] = v
         
         def parse(self):
@@ -122,10 +122,10 @@ class SubstitutionParser:
                 return self._token(tokens)
 
         def _substitute(self, group, modifiers = ''):
-                result = (self.groups.has_key(group) and self.groups[group]) or ''
+                result = (group in self.groups and self.groups[group]) or ''
                 
                 for modifier in modifiers:
-                        if self.modifiers.has_key(modifier):
+                        if modifier in self.modifiers:
                                 result = self.modifiers[modifier](result)
                 
                 return result
@@ -166,7 +166,7 @@ class SubstitutionParser:
                 groups = match.groups()
                 name = groups[0] or groups[1]
 
-                return self.groups.has_key(name) and self.groups[name] != None, tokens[match.end():]        
+                return name in self.groups and self.groups[name] != None, tokens[match.end():]        
         
         def _condition(self, tokens, terminator):
                 # Match ? after (

@@ -18,9 +18,9 @@
 import os
 from gi.repository import Gio, Gtk
 
-from Placeholder import *
-from Parser import Parser, Token
-from Helper import *
+from .Placeholder import *
+from .Parser import Parser, Token
+from .Helper import *
 
 class EvalUtilities:
         def __init__(self, view=None):
@@ -149,7 +149,7 @@ class Snippet:
 
         def _insert_text(self, text):
                 # Insert text keeping indentation in mind
-                indented = unicode.join('\n' + unicode(self._indent), spaces_instead_of_tabs(self._view, text).split('\n'))
+                indented = str.join('\n' + str(self._indent), spaces_instead_of_tabs(self._view, text).split('\n'))
                 self._view.get_buffer().insert(self._insert_iter(), indented)
 
         def _insert_iter(self):
@@ -165,7 +165,7 @@ class Snippet:
                 indent = all_indent[len(self._indent):]
 
                 # Keep indentation
-                return unicode.join('\n' + unicode(indent), val.split('\n'))
+                return str.join('\n' + str(indent), val.split('\n'))
         
         def _create_placeholder(self, data):
                 tabstop = data['tabstop']
@@ -243,7 +243,7 @@ class Snippet:
                                 sys.stderr.write('Token class not supported: %s\n' % token.klass)
                                 continue
                         
-                        if isinstance(val, basestring):
+                        if isinstance(val, str):
                                 # Insert text
                                 self._insert_text(val)
                         else:
@@ -317,7 +317,7 @@ class Snippet:
                 # So now all of the snippet is in the buffer, we have all our 
                 # placeholders right here, what's next, put all marks in the 
                 # plugin_data.marks
-                k = self.placeholders.keys()
+                k = list(self.placeholders.keys())
                 k.sort(reverse=True)
                 
                 plugin_data.placeholders.insert(last_index, self.placeholders[0])

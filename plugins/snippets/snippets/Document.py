@@ -20,10 +20,10 @@ import re
 
 from gi.repository import GLib, Gio, Gdk, Gtk, GtkSource, Pluma
 
-from Library import Library
-from Snippet import Snippet
-from Placeholder import *
-import Completion
+from .Library import Library
+from .Snippet import Snippet
+from .Placeholder import *
+from . import Completion
 
 class DynamicSnippet(dict):
         def __init__(self, text):
@@ -99,7 +99,7 @@ class Document:
                                    buf:       ('notify::language', 'changed', 'cursor-moved', 'insert-text'),
                                    self.view.get_completion(): ('hide',)}
 
-                        for obj, sig in signals.items():
+                        for obj, sig in list(signals.items()):
                                 if obj:
                                         for s in sig:
                                                 self.disconnect_signal(obj, s)
@@ -537,7 +537,7 @@ class Document:
                 self.active_snippets.append(sn)
 
                 # Put cursor at first tab placeholder
-                keys = filter(lambda x: x > 0, sn.placeholders.keys())
+                keys = [x for x in list(sn.placeholders.keys()) if x > 0]
 
                 if len(keys) == 0:
                         if 0 in sn.placeholders:

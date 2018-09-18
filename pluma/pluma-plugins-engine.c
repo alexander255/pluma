@@ -60,7 +60,8 @@ pluma_plugins_engine_init (PlumaPluginsEngine *engine)
 
 	pluma_debug (DEBUG_PLUGINS);
 
-	peas_engine_enable_loader (PEAS_ENGINE (engine), "python");
+	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
+	peas_engine_enable_loader (PEAS_ENGINE (engine), "lua5.1");
 
 	engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine,
 	                                            PLUMA_TYPE_PLUGINS_ENGINE,

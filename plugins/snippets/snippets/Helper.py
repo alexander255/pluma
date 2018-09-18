@@ -15,7 +15,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import string
 from xml.sax import saxutils
 from xml.etree.ElementTree import *
 import re
@@ -33,19 +32,19 @@ def compute_indentation(view, piter):
         line = piter.get_line()
         start = view.get_buffer().get_iter_at_line(line)
         end = start.copy()
-        
+
         ch = end.get_char()
-        
+
         while (ch.isspace() and ch != '\r' and ch != '\n' and \
                         end.compare(piter) < 0):
                 if not end.forward_char():
                         break;
-                
+
                 ch = end.get_char()
-        
+
         if start.equal(end):
                 return ''
-        
+
         return start.get_slice(end)
 
 def markup_escape(text):
@@ -76,7 +75,7 @@ def insert_with_indent(view, piter, text, indentfirst = True, context = None):
                                 text += indent + lines[i] + '\n'
                         else:
                                 text += lines[i] + '\n'
-                
+
                 buf.insert(piter, text[:-1])
 
         buf._snippets_context = None
@@ -112,8 +111,8 @@ def _write_node(node, file, cdata_nodes=(), indent=0):
         elif node is ProcessingInstruction:
                 _write_indent(file, "<?%s?>\n" % saxutils.escape(node.text.encode('utf-8')), indent)
         else:
-                items = node.items()
-                
+                items = list(node.items())
+
                 if items or node.text or len(node):
                         _write_indent(file, "<" + tag.encode('utf-8'), indent)
 
@@ -133,7 +132,7 @@ def _write_node(node, file, cdata_nodes=(), indent=0):
 
                                 for n in node:
                                         _write_node(n, file, cdata_nodes, indent + 1)
-                        
+
                                 if not len(node):
                                         file.write("</" + tag.encode('utf-8') + ">\n")
                                 else:
@@ -145,30 +144,30 @@ def _write_node(node, file, cdata_nodes=(), indent=0):
                 if node.tail and node.tail.strip() != "":
                         file.write(saxutils.escape(node.tail.encode('utf-8')))
 
-def _cdata(text, replace=string.replace):
+def _cdata(text, replace=str.replace):
         text = text.encode('utf-8')
         return '<![CDATA[' + replace(text, ']]>', ']]]]><![CDATA[>') + ']]>'
 
 def buffer_word_boundary(buf):
         iter = buf.get_iter_at_mark(buf.get_insert())
         start = iter.copy()
-        
+
         if not iter.starts_word() and (iter.inside_word() or iter.ends_word()):
                 start.backward_word_start()
-        
+
         if not iter.ends_word() and iter.inside_word():
                 iter.forward_word_end()
-                
+
         return (start, iter)
 
 def buffer_line_boundary(buf):
         iter = buf.get_iter_at_mark(buf.get_insert())
         start = iter.copy()
         start.set_line_offset(0)
-        
+
         if not iter.ends_line():
                 iter.forward_to_line_end()
-        
+
         return (start, iter)
 
 def drop_get_uris(selection):

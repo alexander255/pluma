@@ -18,7 +18,7 @@
 import os
 import re
 import sys
-from SubstitutionParser import SubstitutionParser
+from .SubstitutionParser import SubstitutionParser
 
 class Token:
         def __init__(self, klass, data):
@@ -41,7 +41,7 @@ class Parser:
         REG_ESCAPE = re.compile('(\\$(%s|\\(|\\{|<|%s)|`|\\\\)' % (SREG_ENV, SREG_ID))
         
         def __init__(self, **kwargs):
-                for k, v in kwargs.items():
+                for k, v in list(kwargs.items()):
                         setattr(self, k, v)
 
                 self.position = 0

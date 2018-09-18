@@ -3,7 +3,7 @@ import tempfile
 import sys
 import shutil
 
-from Library import *
+from .Library import *
 
 class Importer:
         def __init__(self, filename):
@@ -92,7 +92,7 @@ class Importer:
                            '.xml': self.import_xml,
                            '.tar': self.import_tar}
 
-                for k, v in actions.items():
+                for k, v in list(actions.items()):
                         if self.filename.endswith(k):
                                 return v()
                         

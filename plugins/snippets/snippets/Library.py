@@ -24,7 +24,7 @@ import re
 from gi.repository import Gdk, Gtk
 
 import xml.etree.ElementTree as et
-from Helper import *
+from .Helper import *
 
 class NamespacedId:
         def __init__(self, namespace, id):
@@ -360,7 +360,7 @@ class LanguageContainer:
                         # FIXME: change this to use 
                         # matevfs.mime_type_get_equivalence when it comes
                         # available
-                        for key, val in snippets.items():
+                        for key, val in list(snippets.items()):
                                 if not value.startswith(key):
                                         continue
                                 
@@ -611,7 +611,7 @@ class SnippetsUserFile(SnippetsSystemFile):
                 
                 try:
                         if not os.path.isdir(path):
-                                os.makedirs(path, 0755)
+                                os.makedirs(path, 0o755)
                 except OSError:
                         # TODO: this is bad...
                         sys.stderr.write("Error in making dirs\n")

@@ -87,7 +87,7 @@ class Capture(GObject.Object):
         
         try:
             self.pipe = subprocess.Popen(self.command, **popen_args)
-        except OSError, e:
+        except OSError as e:
             self.pipe = None
             self.emit('stderr-line', _('Could not execute command: %s') % (e, ))
             return
@@ -157,9 +157,9 @@ class Capture(GObject.Object):
 
             if len(line) > 0:
                 try:
-                    line = unicode(line, 'utf-8')
+                    line = str(line, 'utf-8')
                 except:
-                    line = unicode(line,
+                    line = str(line,
                                    locale.getdefaultlocale()[1],
                                    'replace')
 

@@ -18,8 +18,8 @@
 
 import os
 from gi.repository import Gio, Gdk, Gtk, GtkSource, Pluma
-from outputpanel import OutputPanel
-from capture import *
+from .outputpanel import OutputPanel
+from .capture import *
 
 def default(val, d):
     if val is not None:
@@ -132,7 +132,7 @@ def run_external_tool(window, panel, node):
             try:
                 start, end = document.get_selection_bounds()
                 
-                print start, end
+                print(start, end)
             except ValueError:
                 if input_type == 'selection-document':
                     start, end = document.get_bounds()

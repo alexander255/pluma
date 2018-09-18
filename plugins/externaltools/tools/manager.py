@@ -19,8 +19,8 @@
 __all__ = ('Manager', )
 
 import os.path
-from library import *
-from functions import *
+from .library import *
+from .functions import *
 import hashlib
 from xml.sax import saxutils
 from gi.repository import GObject, Gio, Gdk, Gtk, GtkSource, Pluma
@@ -703,7 +703,7 @@ class Manager(GObject.Object):
             if language in node.languages:
                 node.languages.remove(language)
 
-            self._tool_rows[node] = filter(lambda x: x.valid(), self._tool_rows[node])
+            self._tool_rows[node] = [x for x in self._tool_rows[node] if x.valid()]
             
             if not self._tool_rows[node]:
                 del self._tool_rows[node]
@@ -783,7 +783,7 @@ class Manager(GObject.Object):
                                        Gtk.DialogFlags.MODAL,
                                        Gtk.MessageType.ERROR,
                                        Gtk.ButtonsType.CLOSE,
-                                       _('This accelerator is already bound to %s') % (', '.join(map(lambda x: x.name, col)),))
+                                       _('This accelerator is already bound to %s') % (', '.join([x.name for x in col]),))
 
             dialog.run()
             dialog.destroy()

@@ -3,9 +3,9 @@ import tempfile
 import sys
 import shutil
 
-from Library import *
+from .Library import *
 import xml.etree.ElementTree as et
-from Helper import *
+from .Helper import *
 
 class Exporter:
         def __init__(self, filename, snippets):
@@ -53,7 +53,7 @@ class Exporter:
                         os.chdir(dirname)
                 
                         # Write snippet xml files
-                        for language, snippets in self.snippets.items():
+                        for language, snippets in list(self.snippets.items()):
                                 self.export_xml(dirname, language , snippets)
                 
                         # Archive files
@@ -90,7 +90,7 @@ class Exporter:
                            '.tar.bz2': self.export_tarbz2,
                            '.tar': self.export_tar}
 
-                for k, v in actions.items():
+                for k, v in list(actions.items()):
                         if self.filename.endswith(k):
                                 return v()
                         

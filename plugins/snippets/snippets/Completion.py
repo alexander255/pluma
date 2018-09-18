@@ -1,8 +1,8 @@
 from gi.repository import GObject, Gtk, GtkSource, Pluma
 
-from Library import Library
-from LanguageManager import get_language_manager
-from Snippet import Snippet
+from .Library import Library
+from .LanguageManager import get_language_manager
+from .Snippet import Snippet
 
 class Proposal(GObject.Object, GtkSource.CompletionProposal):
         __gtype_name__ = "PlumaSnippetsProposal"
@@ -89,9 +89,9 @@ class Provider(GObject.Object, GtkSource.CompletionProvider):
 
                 # Filter based on the current word
                 if word:
-                        proposals = filter(lambda x: x['tag'].startswith(word), proposals)
+                        proposals = [x for x in proposals if x['tag'].startswith(word)]
 
-                return map(lambda x: Proposal(x), proposals)
+                return [Proposal(x) for x in proposals]
 
         def do_populate(self, context):
                 proposals = self.get_proposals(self.get_word(context))
